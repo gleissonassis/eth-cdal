@@ -310,7 +310,9 @@ module.exports = function(dependencies) {
       return {
           from: transaction.from,
           to: transaction.to,
-          value: transaction.amount
+          value: transaction.amount,
+          gasLimit: web3.utils.toHex(transaction.gasLimit),
+          gasPrice: web3.utils.toHex(transaction.gasPrice)
       };
     },
 
