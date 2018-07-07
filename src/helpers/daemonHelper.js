@@ -128,6 +128,7 @@ module.exports = function(dependencies) {
     },
 
     sendETHTransaction: function(transaction, privateKey) {
+      var self = this;
       return new Promise(function(resolve, reject) {
         var chain = Promise.resolve();
 
@@ -136,8 +137,7 @@ module.exports = function(dependencies) {
             return web3.eth.getTransactionCount(transaction.from);
           })
           .then(function(count) {
-            transaction.nonce = count;
-            var tx = new Tx(transaction);
+            var tx = new Tx(self.generateETHTransaction(transaction, count));
             var privKey = new Buffer(privateKey.startsWith('0x') ?
                                         privateKey.substring(2) :
                                         privateKey, 'hex');
@@ -306,9 +306,10 @@ module.exports = function(dependencies) {
       }
     },
 
-    generateETHTransaction: function(transaction) {
+    generateETHTransaction: function(transaction, count) {
       return {
           from: transaction.from,
+          nonce: web3.utils.toHex(count),
           to: transaction.to,
           value: web3.utils.toHex(transaction.amount),
           gasLimit: web3.utils.toHex(transaction.gasLimit),
