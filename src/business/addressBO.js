@@ -57,7 +57,7 @@ module.exports = function(dependencies) {
     getFreeAddresses: function() {
       var self = this;
       return new Promise(function(resolve, reject) {
-        var chain = mutexHelper.lock('transaction/' + entity.from);
+        var chain = mutexHelper.lock('getFreeAddresses');
         var unlock = null;
 
         chain
