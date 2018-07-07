@@ -55,11 +55,24 @@ module.exports = function(dependencies) {
     },
 
     getFreeAddresses: function() {
-      logger.info('[AddressBO] Getting free addresses from database');
-      return this.getAll({
-        isEnabled: true,
-        ownerId: null
-      }, {}, '+createdAt');
+      var self = this;
+      return new Promise(function(resolve, reject) {
+        var chain = mutexHelper.lock('transaction/' + entity.from);
+        var unlock = null;
+
+        chain
+          .then(function(r) {
+            unlock = r;
+            logger.info('[AddressBO] Getting free addresses from database');
+            return self.getAll({isEnabled: true, ownerId: null}, {}, '+createdAt');
+          })
+          .then(function(r) {
+            unlock();
+            return r;
+          })
+          .then(resolve)
+          .catch(reject);
+      });
     },
 
     createAddressFromDaemon: function(ownerId, tokenContractAddress) {
