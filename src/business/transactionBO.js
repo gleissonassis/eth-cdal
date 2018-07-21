@@ -529,6 +529,8 @@ module.exports = function(dependencies) {
               from: blockchainTransaction.from,
               input: blockchainTransaction.input,
               parsedInput: parsedInput,
+              symbol: parsedInput && addressInfo.token ?
+                      addressInfo.token.symbol : settings.daemonSettings.defaultSymbol,
               createdAt: dateHelper.getNow()
             };
             logger.info('[TransactionBO] Saving the transaction', JSON.stringify(newTransaction));

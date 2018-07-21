@@ -75,7 +75,7 @@ module.exports = function(dependencies) {
       });
     },
 
-    createAddressFromDaemon: function(ownerId, tokenContractAddress) {
+    createAddressFromDaemon: function(ownerId, tokenContractAddress, tokenSymbol) {
       var self = this;
       var chain = Promise.resolve();
 
@@ -86,15 +86,15 @@ module.exports = function(dependencies) {
             return daemonHelper.createAddress();
           })
           .then(function(r) {
-            logger.info('[AddressBO] Saving the address and linking to ownerId', ownerId);
-            return self.registerAddressFromDaemon(ownerId, r, tokenContractAddress);
+            logger.info('[AddressBO] Saving the address and linking to ownerId', ownerId, tokenContractAddress, tokenSymbol);
+            return self.registerAddressFromDaemon(ownerId, r, tokenContractAddress, tokenSymbol);
           })
           .then(resolve)
           .catch(reject);
       });
     },
 
-    registerAddressFromDaemon: function(ownerId, address, tokenContractAddress) {
+    registerAddressFromDaemon: function(ownerId, address, tokenContractAddress, tokenSymbol) {
       return new Promise(function(resolve, reject) {
         var chain = Promise.resolve();
         chain
@@ -117,6 +117,7 @@ module.exports = function(dependencies) {
             if (tokenContractAddress) {
               addressEntity.token = {
                 contractAddress: tokenContractAddress,
+                symbol: tokenSymbol,
                 balance: {
                   available: 0,
                   locked: 0
@@ -136,7 +137,7 @@ module.exports = function(dependencies) {
       });
     },
 
-    createAddress: function(ownerId, tokenContractAddress) {
+    createAddress: function(ownerId, tokenContractAddress, tokenSymbol) {
       var self = this;
       var chain = Promise.resolve();
       var freeAddress = null;
@@ -166,6 +167,7 @@ module.exports = function(dependencies) {
             if (tokenContractAddress) {
               freeAddress.token = {
                 contractAddress: tokenContractAddress,
+                symbol: tokenSymbol,
                 balance: {
                   available: 0,
                   locked: 0

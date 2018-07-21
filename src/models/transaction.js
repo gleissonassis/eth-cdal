@@ -71,6 +71,10 @@ module.exports = function(){
       type: Object,
       required: false
     },
+    symbol: {
+      type: String,
+      required: false
+    },
     createdAt: {
       type: Date,
       required: false,

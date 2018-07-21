@@ -15,7 +15,7 @@ module.exports = {
       minimumConfirmations: 6,
       minimumAddressPoolSize: 100,
       currentBlockNumber: 1000,
-      transactionNotificationAPI: process.env.NOTIFICATION_API_ADDRESS || 'http://localhost:3004/v1/wallets/BRLT/notifications'
+      transactionNotificationAPI: process.env.NOTIFICATION_API_ADDRESS || 'http://localhost:3004/v1/wallets/${symbol}/notifications'
     },
 
     mutex: {
@@ -29,5 +29,6 @@ module.exports = {
       //baseUrl: process.env.DAEMON_BASE_URL || 'https://ropsten.infura.io/q4jm34Psz0hLbGQAfZjs',
       //baseUrl: process.env.DAEMON_BASE_URL || 'http://localhost:7545',
       baseUrl: process.env.DAEMON_BASE_URL || 'http://localhost:8545',
+      defaultSymbol: process.env.DAEMON_DEFAULT_SYMBPL || 'ETH'
     }
   };

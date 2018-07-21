@@ -41,7 +41,7 @@ module.exports = function() {
 
     createAddress: function(req, res) {
       var rh = new HTTPResponseHelper(req, res);
-      business.createAddress(req.params.ownerId, req.body.contractAddress)
+      business.createAddress(req.params.ownerId, req.body.contractAddress, req.body.tokenSymbol)
         .then(function(r) {
           rh.created(r);
 

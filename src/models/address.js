@@ -32,6 +32,10 @@ module.exports = function(){
       required: false,
     },
     token: {
+      symbol: {
+        type: String,
+        required: false
+      },
       contractAddress: {
         type: String,
         required: false
