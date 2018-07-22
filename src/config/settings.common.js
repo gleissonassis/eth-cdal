@@ -13,7 +13,7 @@ module.exports = {
 
     defaultSettings: {
       minimumConfirmations: 6,
-      minimumAddressPoolSize: 100,
+      minimumAddressPoolSize: 0,
       currentBlockNumber: 1000,
       transactionNotificationAPI: process.env.NOTIFICATION_API_ADDRESS || 'http://localhost:3004/v1/wallets/BRLT/notifications'
     },
