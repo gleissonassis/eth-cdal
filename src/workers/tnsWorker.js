@@ -58,7 +58,6 @@ module.exports = function(dependencies) {
             for (var i = 0; i < transactions.length; i++) {
               logger.info('[TNSWorker] Notifiyng about the transaction', transactions[i].transactionHash);
               var notificationPromise = new Promise(function(resolve) {
-                console.log('AAAAAA!', transactionNotificationAPI, transactions[i].symbol);
                 endpoint = transactionNotificationAPI.replace('${symbol}', transactions[i].symbol);
                 requestHelper.postJSON(
                   endpoint,

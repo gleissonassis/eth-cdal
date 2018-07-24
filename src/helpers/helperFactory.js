@@ -18,6 +18,9 @@ var ERC865Interface               = require('../contracts/interfaces/ERC865.json
 var FullTokenInterface            = require('../contracts/interfaces/FullToken.json');
 var MintableTokenInterface        = require('../contracts/interfaces/MintableToken.json');
 
+// preventing ERR max number of clients reached from REDIS
+var m = mutex(settings.mutex);
+
 module.exports = {
   getHelper: function(helper) {
     switch (helper) {
@@ -35,7 +38,7 @@ module.exports = {
         });
       case 'mutex':
         return new MutexHelper({
-          mutex: mutex(settings.mutex)
+          mutex: m
         });
       case 'request':
         return new RequestHelper({
