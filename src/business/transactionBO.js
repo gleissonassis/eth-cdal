@@ -266,11 +266,15 @@ module.exports = function(dependencies) {
           })
           .then(resolve)
           .catch(function(e) {
-            reject({
-              status: 500,
-              error: 'SEND_UNKNOW_ERROR',
-              details: e.message
-            });
+            if (e.status) {
+              reject(e);
+            } else {
+              reject({
+                status: 500,
+                error: 'SEND_UNKNOW_ERROR',
+                details: e.message
+              });
+            }
           });
       });
     },
