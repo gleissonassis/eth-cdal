@@ -29,6 +29,7 @@ module.exports = {
       //baseUrl: process.env.DAEMON_BASE_URL || 'https://ropsten.infura.io/q4jm34Psz0hLbGQAfZjs',
       //baseUrl: process.env.DAEMON_BASE_URL || 'http://localhost:7545',
       baseUrl: process.env.DAEMON_BASE_URL || 'http://localhost:8545',
-      defaultSymbol: process.env.DAEMON_DEFAULT_SYMBPL || 'ETH'
+      defaultSymbol: process.env.DAEMON_DEFAULT_SYMBPL || 'ETH',
+      mainAddress: process.env.DAEMON_MAIN_ADDRESS
     }
   };

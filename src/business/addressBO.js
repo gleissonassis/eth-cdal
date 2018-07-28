@@ -28,7 +28,22 @@ module.exports = function(dependencies) {
       });
     },
 
-    getAll: function(filter) {
+    getAddressToForwardBalance: function(minimumBalance, mainAddress) {
+      var filter = {
+        'balance.available': {$gt: minimumBalance},
+        'address': {$ne: mainAddress},
+        'isForwarding': {$ne: true}
+      };
+
+      logger.info('[AddressBO] Listing all addresses to forward balance by filter ', JSON.stringify(filter));
+      return this.getAll(filter, {limit: 1});
+    },
+
+    addForwardHistory: function(id, forwarded, history) {
+      return addressDAO.addForwardHistory(id, forwarded, history);
+    },
+
+    getAll: function(filter, pagination, sort) {
       return new Promise(function(resolve, reject) {
         if (!filter) {
           filter = {};
@@ -36,8 +51,14 @@ module.exports = function(dependencies) {
 
         filter.isEnabled = true;
 
+        var pagination = {};
+
+        if (!sort) {
+          sort = '+createdAt';
+        }
+
         logger.info('[AddressBO] Listing all addresses by filter ', JSON.stringify(filter));
-        addressDAO.getAll(filter, {}, '+createdAt')
+        addressDAO.getAll(filter, pagination, sort)
           .then(function(r) {
             logger.info('[AddressBO] Total of addresses', r.length);
             return r.map(function(item) {
@@ -134,6 +155,13 @@ module.exports = function(dependencies) {
           })
           .then(resolve)
           .catch(reject);
+      });
+    },
+
+    setIsForwardingStatus: function(id, status) {
+      return addressDAO.update({
+        _id: id,
+        isForwarding: status
       });
     },
 

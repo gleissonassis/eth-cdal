@@ -3,12 +3,20 @@ var BOSWorker           = require('./bosWorker');
 var TNSWorker           = require('./tnsWorker');
 var AAPMSWorker         = require('./aapmsWorker');
 var BOSWorker           = require('./bosWorker');
+var BFSWorker           = require('./bfsWorker');
 var DateHelper          = require('../helpers/dateHelper');
 var HelperFactory       = require('../helpers/helperFactory');
 
 module.exports = {
   getWorker: function(woker) {
     switch (woker) {
+      case 'bfs':
+        return new BFSWorker({
+          addressBO: BOFactory.getBO('address'),
+          transactionBO: BOFactory.getBO('transaction'),
+          daemonHelper: HelperFactory.getHelper('daemon'),
+          dateHelper: HelperFactory.getHelper('date')
+        });
       case 'aapms':
         return new AAPMSWorker({
           dateHelper: new DateHelper(),

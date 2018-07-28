@@ -8,9 +8,10 @@
   },
   "scripts": {
     "start": "node src/server.js",
-    "GANACHE": "DB_NAME=eth-cdal-ganache  DAEMON_BASE_URL=http://localhost:7545 node src/server.js",
-    "ROPSTEN": "DB_NAME=eth-cdal-ropsten DAEMON_BASE_URL=https://ropsten.infura.io node src/server.js",
-    "MORDEN": "DB_NAME=etc-cdal-morden DAEMON_BASE_URL=http://35.237.10.166:8545 node src/server.js",
+    "GANACHE": "DB_NAME=eth-cdal-ganache DAEMON_MAIN_ADDRESS=0x6025961e3F43AeB967f28A0aD88E46860b85def4 DAEMON_MAIN_ADDRESS=0x6025961e3F43AeB967f28A0aD88E46860b85def4 DAEMON_BASE_URL=http://localhost:7545 node src/server.js",
+    "GANACHE-SERVICES": "DB_NAME=eth-cdal-ganache DAEMON_MAIN_ADDRESS=0x6025961e3F43AeB967f28A0aD88E46860b85def4 DAEMON_BASE_URL=http://localhost:7545 node src/services.js",
+    "ROPSTEN": "DB_NAME=eth-cdal-ropsten DAEMON_MAIN_ADDRESS=0x85264427771cd0a57a8EEbae9Ae1Dc39F7eEBEc0 DAEMON_BASE_URL=https://ropsten.infura.io node src/server.js",
+    "MORDEN": "DB_NAME=etc-cdal-morden DAEMON_MAIN_ADDRESS=0xc24d34c9941d562d442bab0a3422b57fb420e4dc DAEMON_BASE_URL=http://35.237.10.166:8545 node src/server.js",
     "test": "NODE_ENV=test istanbul cover --reporter=html ./node_modules/mocha/bin/_mocha -- -R spec --recursive"
   },
   "repository": {

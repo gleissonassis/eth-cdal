@@ -21,6 +21,10 @@ module.exports = function(){
       locked: {
         type: Number,
         required: true
+      },
+      forwarded: {
+        type: Number,
+        required: false
       }
     },
     privateKey: {
@@ -58,7 +62,31 @@ module.exports = function(){
     isEnabled: {
       type: Boolean,
       required: true
-    }
+    },
+    isForwarding: {
+      type: Boolean,
+      required: false
+    },
+    forwards: [
+      {
+        to: {
+          type: String,
+          required: true,
+        },
+        transactionHash: {
+          type: String,
+          required: true,
+        },
+        amount: {
+          type: Number,
+          required: true,
+        },
+        createdAt: {
+          type: Date,
+          required: true,
+        },
+      }
+    ]
   });
 
   model = model ? model : mongoose.model('addresses', schema);

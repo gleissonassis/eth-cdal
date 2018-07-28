@@ -153,5 +153,26 @@ module.exports = function() {
         });
       });
     },
+
+    addForwardHistory: function(id, forwarded, history) {
+      return new Promise(function(resolve, reject) {
+        logger.debug('[AddressDAO] Adding to forward history of the address');
+
+        model.findByIdAndUpdate(id, {
+          $push: {forwards: history},
+          $inc: {'balance.available': -forwarded, 'balance.forwarded': forwarded},
+          isForwarding: false}, {'new': true, fields: projectionCommonFields})
+        .then(function(item) {
+          logger.debug('[AddressDAO] The history has been updated succesfully');
+          resolve(item.toObject());
+        }).catch(function(error) {
+          logger.error('[AddressDAO] An error has ocurred while updating this forwards history', error);
+          reject({
+            status: 422,
+            message: error
+          });
+        });
+      });
+    },
   };
 };

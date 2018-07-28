@@ -11,12 +11,14 @@ module.exports = function() {
         var bosWorker = WorkerFactory.getWorker('bos');
         var aapmsWorker = WorkerFactory.getWorker('aapms');
         var tnsWorker = WorkerFactory.getWorker('tns');
+        var bfsWorker = WorkerFactory.getWorker('bfs');
 
         chain
           .then(function() {
             aapmsWorker.run();
             tnsWorker.run();
             bosWorker.run();
+            bfsWorker.run();
           })
           .then(resolve)
           .catch(reject);
