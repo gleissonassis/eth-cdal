@@ -24,12 +24,13 @@ module.exports = {
 
     daemonSettings: {
       previousBlocksToCheck: 100,
-      gasLimit: process.env.DAEMON_GAS_LIMIT ||4712388,
+      gasLimit: process.env.DAEMON_GAS_LIMIT || 4712388,
       //baseUrl: process.env.DAEMON_BASE_URL || 'https://ropsten.infura.io',
       //baseUrl: process.env.DAEMON_BASE_URL || 'https://ropsten.infura.io/q4jm34Psz0hLbGQAfZjs',
       //baseUrl: process.env.DAEMON_BASE_URL || 'http://localhost:7545',
       baseUrl: process.env.DAEMON_BASE_URL || 'http://localhost:8545',
       defaultSymbol: process.env.DAEMON_DEFAULT_SYMBPL || 'ETH',
-      mainAddress: process.env.DAEMON_MAIN_ADDRESS
+      mainAddress: process.env.DAEMON_MAIN_ADDRESS || '0x6025961e3F43AeB967f28A0aD88E46860b85def4',
+      erc20TransferGasLimit: process.env.DAEMON_ER20_TRANSFER_GAST_LIMIT || 57381
     }
   };

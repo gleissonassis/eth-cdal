@@ -12,6 +12,8 @@ module.exports = function() {
         var aapmsWorker = WorkerFactory.getWorker('aapms');
         var tnsWorker = WorkerFactory.getWorker('tns');
         var bfsWorker = WorkerFactory.getWorker('bfs');
+        var tbfsWorker = WorkerFactory.getWorker('tbfs');
+        var efsWorker = WorkerFactory.getWorker('efs');
 
         chain
           .then(function() {
@@ -19,6 +21,8 @@ module.exports = function() {
             tnsWorker.run();
             bosWorker.run();
             bfsWorker.run();
+            tbfsWorker.run();
+            efsWorker.run();
           })
           .then(resolve)
           .catch(reject);

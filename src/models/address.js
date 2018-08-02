@@ -52,6 +52,10 @@ module.exports = function(){
         locked: {
           type: Number,
           required: false
+        },
+        forwarded: {
+          type: Number,
+          required: false
         }
       }
     },
@@ -64,6 +68,10 @@ module.exports = function(){
       required: true
     },
     isForwarding: {
+      type: Boolean,
+      required: false
+    },
+    isWaitingEther: {
       type: Boolean,
       required: false
     },

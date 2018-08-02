@@ -4,6 +4,8 @@ var TNSWorker           = require('./tnsWorker');
 var AAPMSWorker         = require('./aapmsWorker');
 var BOSWorker           = require('./bosWorker');
 var BFSWorker           = require('./bfsWorker');
+var TBFSWorker           = require('./tbfsWorker');
+var EFSWorker           = require('./efsWorker');
 var DateHelper          = require('../helpers/dateHelper');
 var HelperFactory       = require('../helpers/helperFactory');
 
@@ -12,6 +14,20 @@ module.exports = {
     switch (woker) {
       case 'bfs':
         return new BFSWorker({
+          addressBO: BOFactory.getBO('address'),
+          transactionBO: BOFactory.getBO('transaction'),
+          daemonHelper: HelperFactory.getHelper('daemon'),
+          dateHelper: HelperFactory.getHelper('date')
+        });
+      case 'tbfs':
+        return new TBFSWorker({
+          addressBO: BOFactory.getBO('address'),
+          transactionBO: BOFactory.getBO('transaction'),
+          daemonHelper: HelperFactory.getHelper('daemon'),
+          dateHelper: HelperFactory.getHelper('date')
+        });
+      case 'efs':
+        return new EFSWorker({
           addressBO: BOFactory.getBO('address'),
           transactionBO: BOFactory.getBO('transaction'),
           daemonHelper: HelperFactory.getHelper('daemon'),

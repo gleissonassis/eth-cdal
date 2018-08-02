@@ -1,6 +1,7 @@
 var Promise         = require('promise');
 var logger          = require('../config/logger');
 var settings        = require('../config/settings');
+var Decimal         = require('decimal.js');
 
 module.exports = function(dependencies) {
   var addressBO = dependencies.addressBO;
@@ -87,7 +88,9 @@ module.exports = function(dependencies) {
               return addressBO.setIsForwardingStatus(address.id, true)
                 .then(function() {
                   transaction.from = address.address;
-                  transaction.amount = address.balance.available - estimatedData.estimatedFee;
+                  transaction.amount = parseInt(new Decimal(address.balance.available).minus(estimatedData.estimatedFee).toFixed(0));
+
+                  logger.debug('[TBFSWorker] Sending transaction', JSON.stringify(transaction));
 
                   return daemonHelper.sendTransaction(transaction, address.privateKey)
                     .then(function(e) {
@@ -140,7 +143,6 @@ module.exports = function(dependencies) {
             ethTransaction = {
               from: settings.daemonSettings.mainAddress,
               to: settings.daemonSettings.mainAddress,
-              nonce: 0,
               amount: 0,
               gasLimit: 0,
               gasPrice: 0
@@ -153,16 +155,16 @@ module.exports = function(dependencies) {
             ethTransaction.gasLimit = r.estimatedGas;
             ethTransaction.gasPrice = r.gasPrice;
 
-            logger.info('[BFSWorker] A new verification will occurr in 10s');
+            logger.info('[BFSWorker] Forwarding balance...');
             return self.forwardBalance(r, ethTransaction);
           })
-          .then(function(r) {
-            console.log(r);
+          .then(function() {
             logger.info('[BFSWorker] A new verification will occurr in 10s');
             resolve(true);
           })
           .catch(function(r) {
-            logger.error('[BFSWorker] An error has occurred while running the service', r.transactionHash);
+            console.log(r);
+            logger.error('[BFSWorker] An error has occurred while running the service', JSON.stringify(r));
             resolve(true);
           });
       });

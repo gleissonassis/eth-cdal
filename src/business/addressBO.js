@@ -32,15 +32,47 @@ module.exports = function(dependencies) {
       var filter = {
         'balance.available': {$gt: minimumBalance},
         'address': {$ne: mainAddress},
-        'isForwarding': {$ne: true}
+        'isForwarding': {$ne: true},
+        'token': {$eq: null}
       };
 
       logger.info('[AddressBO] Listing all addresses to forward balance by filter ', JSON.stringify(filter));
       return this.getAll(filter, {limit: 1});
     },
 
+    getAddressToFill: function(minimumBalance, mainAddress) {
+      var filter = {
+        'balance.available': {$lt: minimumBalance},
+        'token.balance.available': {$gt: 0},
+        'address': {$ne: mainAddress},
+        'isWaitingEther': {$ne: true}
+      };
+
+      logger.info('[AddressBO] Listing all addresses to fill with ether ', JSON.stringify(filter));
+      return this.getAll(filter, {limit: 1});
+    },
+
+    getAddressToForwardTokenBalance: function(minimumBalance, mainAddress) {
+      var filter = {
+        'balance.available': {$gte: minimumBalance},
+        'token.balance.available': {$gt: 0},
+        'address': {$ne: mainAddress}
+      };
+
+      logger.info('[AddressBO.getAddressToForwardTokenBalance()] Listing all addresses to fill with ether ', JSON.stringify(filter));
+      return this.getAll(filter);
+    },
+
     addForwardHistory: function(id, forwarded, history) {
       return addressDAO.addForwardHistory(id, forwarded, history);
+    },
+
+    addFillingHistory: function(id, forwarded, history) {
+      return addressDAO.addFillingHistory(id, forwarded, history);
+    },
+
+    addTokenForwardHistory: function(id, forwarded, history) {
+      return addressDAO.addTokenForwardHistory(id, forwarded, history);
     },
 
     getAll: function(filter, pagination, sort) {
@@ -162,6 +194,13 @@ module.exports = function(dependencies) {
       return addressDAO.update({
         _id: id,
         isForwarding: status
+      });
+    },
+
+    setIsWaitingEtherStatus: function(id, status) {
+      return addressDAO.update({
+        _id: id,
+        isWaitingEther: status
       });
     },
 
@@ -393,10 +432,10 @@ module.exports = function(dependencies) {
         .then(function(r) {
           tokenBalance = r;
           var o = modelParser.prepare(address);
-          o.balance.available = new Decimal(ethBalance).toFixed(0);
+          o.balance.available = new Decimal(ethBalance).toFixed(0).toString();
 
           if (tokenBalance) {
-            o.token.balance.available = new Decimal(tokenBalance).toFixed(0);
+            o.token.balance.available = new Decimal(tokenBalance).toFixed(0).toString();
           }
 
           return addressDAO.update(o);

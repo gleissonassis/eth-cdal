@@ -174,5 +174,47 @@ module.exports = function() {
         });
       });
     },
+
+    addTokenForwardHistory: function(id, forwarded, history) {
+      return new Promise(function(resolve, reject) {
+        logger.debug('[AddressDAO.addTokenForwardHistory()] Adding to forward history of the address');
+
+        model.findByIdAndUpdate(id, {
+          $push: {forwards: history},
+          $inc: {'token.balance.available': -forwarded, 'token.balance.forwarded': forwarded},
+          isWaitingEther: false}, {'new': true, fields: projectionCommonFields})
+        .then(function(item) {
+          logger.debug('[AddressDAO.addTokenForwardHistory()] The history has been updated succesfully');
+          resolve(item.toObject());
+        }).catch(function(error) {
+          logger.error('[AddressDAO.addTokenForwardHistory()] An error has ocurred while updating this forwards history', error);
+          reject({
+            status: 422,
+            message: error
+          });
+        });
+      });
+    },
+
+    addFillingHistory: function(id, forwarded, history) {
+      return new Promise(function(resolve, reject) {
+        logger.debug('[AddressDAO.addFillingHistory()] Adding to forward history of the address');
+
+        model.findByIdAndUpdate(id, {
+          $push: {forwards: history},
+          $inc: {'balance.forwarded': forwarded}
+        }, {'new': true, fields: projectionCommonFields})
+        .then(function(item) {
+          logger.debug('[AddressDAO.addFillingHistory()] The history has been updated succesfully');
+          resolve(item.toObject());
+        }).catch(function(error) {
+          logger.error('[AddressDAO.addFillingHistory()] An error has ocurred while updating this forwards history', error);
+          reject({
+            status: 422,
+            message: error
+          });
+        });
+      });
+    }
   };
 };

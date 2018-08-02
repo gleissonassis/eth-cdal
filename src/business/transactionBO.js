@@ -403,7 +403,7 @@ module.exports = function(dependencies) {
                   })
                   .then(function(addressTo) {
                     if (addressTo) {
-                      logger.info('[TransactionBO] Updating the balance from blockchain contract transaction', addressTo.to, transaction.to);
+                      logger.info('[TransactionBO] Updating the balance from blockchain contract transaction', addressTo.address, transaction.to);
                       return addressBO.updateBalance(addressTo);
                     } else {
                       logger.info('[TransactionBO] There is no address at the database for the specified contract transaction', transaction.to);
