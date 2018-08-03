@@ -72,6 +72,10 @@ module.exports = function(dependencies) {
       return web3.eth.getBlockNumber();
     },
 
+    getTransactionReceipt: function(hash) {
+      return web3.eth.getTransactionReceipt(hash);
+    },
+
     getTransactions: function(from, to) {
       return new Promise(function(resolve, reject) {
         var chain = Promise.resolve();

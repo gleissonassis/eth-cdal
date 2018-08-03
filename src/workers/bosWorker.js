@@ -41,15 +41,28 @@ module.exports = function(dependencies) {
         var transaction = transactions[i];
         var lowerCaseTo = transaction.to ? new String(transaction.to).toLowerCase():'';
         var lowerCaseFrom = transaction.from ? new String(transaction.from).toLowerCase():'';
+
         if (this.addresses[lowerCaseTo] || this.addresses[lowerCaseFrom]) {
           logger.info('[BOSWorker] Parsing the transaction', transactions[i].hash);
 
           var pTransaction = new Promise(function(resolve) {
-            transactionBO.parseTransaction(transactions[i], currentBlockNumber)
+            var transaction = transactions[i];
+            logger.info('[BOSWorker] Getting receipt from ', transaction.hash);
+            daemonHelper.getTransactionReceipt(transaction.hash)
+              .then(function(r) {
+                if (r && r.status) {
+                  logger.info('[BOSWorker] Parsing valid transaction', transaction.hash);
+                  return transactionBO.parseTransaction(transaction, currentBlockNumber);
+                } else {
+                  logger.info('[BOSWorker] Ignoring failed transaction', transaction.hash);
+                  return Promise.resolve();
+                }
+              })
               .then(resolve)
-              .catch(resolve);
-          });
-
+              .catch(function(e) {
+                console.log('ERROR', e);
+              });
+            });
           p.push(pTransaction);
         } else {
           logger.info('[BOSWorker] Ignoring the transaction', transactions[i].hash);
