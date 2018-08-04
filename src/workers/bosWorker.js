@@ -50,7 +50,7 @@ module.exports = function(dependencies) {
             logger.info('[BOSWorker] Getting receipt from ', transaction.hash);
             daemonHelper.getTransactionReceipt(transaction.hash)
               .then(function(r) {
-                if (r && r.status) {
+                if (r && (r.status || r.root)) {
                   logger.info('[BOSWorker] Parsing valid transaction', transaction.hash);
                   return transactionBO.parseTransaction(transaction, currentBlockNumber);
                 } else {
