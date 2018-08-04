@@ -268,7 +268,7 @@ module.exports = function(dependencies) {
         }
 
         if (tokenContractAddress) {
-          filter['token.contractAddress'] = tokenContractAddress;
+          filter['token.contractAddress'] = {$regex : new RegExp(tokenContractAddress, 'i')};
         }
 
         logger.info('[AddressBO] Getting an address by ownerId/address', ownerId, address);
