@@ -45,7 +45,8 @@ module.exports = function(dependencies) {
         'balance.available': {$lt: minimumBalance},
         'token.balance.available': {$gt: 0},
         'address': {$ne: mainAddress},
-        'isWaitingEther': {$ne: true}
+        'isWaitingEther': {$ne: true},
+        'token.symbol': {$ne: 'TUSD'}
       };
 
       logger.info('[AddressBO] Listing all addresses to fill with ether ', JSON.stringify(filter));
