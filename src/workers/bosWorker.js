@@ -51,17 +51,22 @@ module.exports = function(dependencies) {
             daemonHelper.getTransactionReceipt(transaction.hash)
               .then(function(r) {
                 // status validation: https://github.com/ethereumproject/go-ethereum/issues/407
-                if (r && !r.status) {
+                if (!r || (r && !r.status)) {
                   logger.info('[BOSWorker] Ignoring failed transaction', transaction.hash);
                   return Promise.resolve();
                 } else {
-                  logger.info('[BOSWorker] Parsing valid transaction', transaction.hash);
+                  logger.info('[BOSWorker] Parsing a valid transaction', transaction.hash);
                   return transactionBO.parseTransaction(transaction, currentBlockNumber);
                 }
               })
               .then(resolve)
               .catch(function(e) {
-                console.log('ERROR', e);
+                console.log(e);
+                if (e.status === 404) {
+                  logger.error('[BOSWorker] Ignoring this transaction. Address not found', transaction.hash, e);
+                } else {
+                  logger.error('[BOSWorker] An error has occorred while getting transaction receipt', transaction.hash, e);
+                }
               });
             });
           p.push(pTransaction);

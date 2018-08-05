@@ -473,10 +473,17 @@ module.exports = function(dependencies) {
             }
           })
           .then(function(r) {
-            addressInfo = r;
-            logger.info('[TransactionBO] Trying to find the transaction request linked to this hash',
-              blockchainTransaction.hash);
-            return self.getTransactionRequestByTransactionHash(blockchainTransaction.hash);
+            if (!r) {
+              throw {
+                status: 404,
+                message: 'Address not found ' (parsedInput ? parsedInput.params.to : blockchainTransaction.to)
+              };
+            } else {
+              addressInfo = r;
+              logger.info('[TransactionBO] Trying to find the transaction request linked to this hash',
+                blockchainTransaction.hash);
+              return self.getTransactionRequestByTransactionHash(blockchainTransaction.hash);
+            }
           })
           .then(function(r) {
             transactionRequest = r;
