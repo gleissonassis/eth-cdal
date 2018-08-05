@@ -142,7 +142,7 @@ module.exports = function(dependencies) {
             ethTransaction = {
               from: settings.daemonSettings.mainAddress,
               to: settings.daemonSettings.mainAddress,
-              amount: 0,
+              value: 0,
               gasLimit: 0,
               gasPrice: 0
             };
