@@ -43,7 +43,6 @@ module.exports = function(dependencies) {
         return chain
           .then(function() {
             logger.info('[BFSWorker.estimateGas()] Estimating the fee', JSON.stringify(ethTransaction));
-
             return daemonHelper.estimateGas(ethTransaction)
               .then(function(r) {
                 estimatedGas = r > settings.daemonSettings.gasLimit ? settings.daemonSettings.gasLimit : r;
@@ -90,7 +89,7 @@ module.exports = function(dependencies) {
                   transaction.from = address.address;
                   transaction.amount = parseInt(new Decimal(address.balance.available).minus(estimatedData.estimatedFee).toFixed(0));
 
-                  logger.debug('[TBFSWorker] Sending transaction', JSON.stringify(transaction));
+                  logger.debug('[BFSWorker] Sending transaction', JSON.stringify(transaction));
 
                   return daemonHelper.sendTransaction(transaction, address.privateKey)
                     .then(function(e) {

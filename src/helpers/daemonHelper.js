@@ -61,6 +61,8 @@ module.exports = function(dependencies) {
     },
 
     estimateGas: function(transaction) {
+      var tmpTransaction = Object.assign({}, transaction);
+      tmpTransaction.value = transaction.amount;
       return web3.eth.estimateGas(transaction);
     },
 
