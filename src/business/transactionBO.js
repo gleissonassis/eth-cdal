@@ -476,7 +476,7 @@ module.exports = function(dependencies) {
             if (!r) {
               throw {
                 status: 404,
-                message: 'Address not found ' (parsedInput ? parsedInput.params.to : blockchainTransaction.to)
+                message: 'Address not found ' + (parsedInput ? parsedInput.params.to : blockchainTransaction.to)
               };
             } else {
               addressInfo = r;
