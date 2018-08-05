@@ -51,7 +51,19 @@ module.exports = function(dependencies) {
             daemonHelper.getTransactionReceipt(transaction.hash)
               .then(function(r) {
                 // status validation: https://github.com/ethereumproject/go-ethereum/issues/407
-                if (!r || (r && !r.status)) {
+
+                var isValidTransaction = false;
+
+                if (settings.daemonSettings.defaultSymbol === 'ETH') {
+                  isValidTransaction = r && r.status === true;
+                } else if (settings.daemonSettings.defaultSymbol === 'ETC') {
+                  isValidTransaction = r && (r.status || r.root);
+                } else {
+                  logger.warn('[BOSWorker] Unkown coin symbol. Using ETH rules', settings.daemonSettings.defaultSymbol);
+                  isValidTransaction = r && r.status;
+                }
+
+                if (!isValidTransaction) {
                   logger.info('[BOSWorker] Ignoring failed transaction', transaction.hash);
                   return Promise.resolve();
                 } else {
