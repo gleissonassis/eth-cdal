@@ -67,6 +67,7 @@ module.exports = function(dependencies) {
                 } else {
                   logger.error('[BOSWorker] An error has occorred while getting transaction receipt', transaction.hash, e);
                 }
+                resolve(e);
               });
             });
           p.push(pTransaction);
