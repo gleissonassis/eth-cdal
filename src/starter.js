@@ -22,7 +22,7 @@ module.exports = function() {
             bosWorker.run();
             bfsWorker.run();
             tbfsWorker.run();
-            //efsWorker.run();
+            efsWorker.run();
           })
           .then(resolve)
           .catch(reject);
