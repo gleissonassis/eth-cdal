@@ -351,6 +351,9 @@ module.exports = function(dependencies) {
     },
 
     generateTransferTransaction: function(transaction, count) {
+      logger.debug('[DeamonHelper.generateTransferTransaction()] Parsing amount', transaction.token.method.params.amount);
+      logger.debug('[DeamonHelper.generateTransferTransaction()] Parsing amount to wei', transaction.token.method.params.amount, web3.utils.toWei(transaction.token.method.params.amount, 'wei'));
+
       var token = new web3.eth.Contract(erc20Interface.abi, transaction.token.contractAddress);
       var r = {
             from: transaction.from,
@@ -362,7 +365,7 @@ module.exports = function(dependencies) {
             data: token.methods.transfer(transaction.token.method.params.to, web3.utils.toBN(web3.utils.toWei(transaction.token.method.params.amount, 'wei')).toString()).encodeABI(),
         };
 
-      logger.debug('[DeamonHelper.generateTransaction()] Generated transfer transaction', JSON.stringify(r));
+      logger.debug('[DeamonHelper.generateTransferTransaction()] Generated transfer transaction', JSON.stringify(r));
       return r;
     },
 
