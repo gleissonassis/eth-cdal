@@ -359,7 +359,7 @@ module.exports = function(dependencies) {
             gasPrice: web3.utils.toHex(transaction.gasPrice),
             to: transaction.token.contractAddress,
             value: '0x0',
-            data: token.methods.transfer(transaction.token.method.params.to, web3.utils.toBN(web3.utils.toWei(transaction.token.method.params.amount, 'wei'))).encodeABI(),
+            data: token.methods.transfer(transaction.token.method.params.to, web3.utils.toWei(transaction.token.method.params.amount, 'wei')).encodeABI(),
         };
 
       logger.debug('[DeamonHelper.generateTransaction()] Generated transfer transaction', JSON.stringify(r));
