@@ -2,6 +2,25 @@ var Decimal         = require('decimal.js');
 var Tx              = require('ethereumjs-tx');
 var logger          = require('../config/logger');
 
+function forceBN(x) {
+  var e = null;
+  if (Math.abs(x) < 1.0) {
+    e = parseInt(x.toString().split('e-')[1]);
+    if (e) {
+        x *= Math.pow(10,e-1);
+        x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
+    }
+  } else {
+    e = parseInt(x.toString().split('+')[1]);
+    if (e > 20) {
+        e -= 20;
+        x /= Math.pow(10,e);
+        x += (new Array(e+1)).join('0');
+    }
+  }
+  return x;
+};
+
 module.exports = function(dependencies) {
   var web3 = dependencies.web3;
   var abiDecoder = dependencies.abiDecoder;
@@ -328,7 +347,7 @@ module.exports = function(dependencies) {
           from: transaction.from,
           nonce: web3.utils.toHex(count),
           to: transaction.to,
-          value: web3.utils.toBN(transaction.amount),
+          value: web3.utils.toBN(forceBN(transaction.amount)),
           gasLimit: web3.utils.toHex(transaction.gasLimit),
           gasPrice: web3.utils.toHex(transaction.gasPrice)
       };
@@ -338,6 +357,11 @@ module.exports = function(dependencies) {
     },
 
     generateMintTransaction: function(transaction, count) {
+      logger.debug('[DeamonHelper.generateMintTransaction()] Parsing amount', transaction.token.method.params.amount);
+      logger.debug('[DeamonHelper.generateMintTransaction()] Parsing amount to wei',
+        transaction.token.method.params.amount,
+        forceBN(transaction.token.method.params.amount));
+
       var token = new web3.eth.Contract(mintableTokenInterface.abi, transaction.token.contractAddress);
       return {
             from: transaction.from,
@@ -346,13 +370,15 @@ module.exports = function(dependencies) {
             gasPrice: web3.utils.toHex(transaction.gasPrice),
             to: transaction.token.contractAddress,
             value: '0x0',
-            data: token.methods.mint(transaction.token.method.params.to, web3.utils.toBN(transaction.token.method.params.amount)).encodeABI(),
+            data: token.methods.mint(transaction.token.method.params.to, web3.utils.toBN(forceBN(transaction.token.method.params.amount))).encodeABI(),
         };
     },
 
     generateTransferTransaction: function(transaction, count) {
       logger.debug('[DeamonHelper.generateTransferTransaction()] Parsing amount', transaction.token.method.params.amount);
-      logger.debug('[DeamonHelper.generateTransferTransaction()] Parsing amount to wei', transaction.token.method.params.amount, web3.utils.toWei(transaction.token.method.params.amount.toString(), 'wei'));
+      logger.debug('[DeamonHelper.generateTransferTransaction()] Parsing amount to wei',
+        transaction.token.method.params.amount,
+        forceBN(transaction.token.method.params.amount));
 
       var token = new web3.eth.Contract(erc20Interface.abi, transaction.token.contractAddress);
       var r = {
@@ -362,7 +388,7 @@ module.exports = function(dependencies) {
             gasPrice: web3.utils.toHex(transaction.gasPrice),
             to: transaction.token.contractAddress,
             value: '0x0',
-            data: token.methods.transfer(transaction.token.method.params.to, web3.utils.toWei(transaction.token.method.params.amount.toString(), 'wei')).encodeABI(),
+            data: token.methods.transfer(transaction.token.method.params.to, web3.utils.toBN(forceBN(transaction.token.method.params.amount))).encodeABI(),
         };
 
       logger.debug('[DeamonHelper.generateTransferTransaction()] Generated transfer transaction', JSON.stringify(r));
@@ -380,8 +406,8 @@ module.exports = function(dependencies) {
             value: '0x0',
             data: token.methods.transferPreSigned(transaction.token.method.params.signature,
                                                   transaction.token.method.params.to,
-                                                  web3.utils.toBN(transaction.token.method.params.amount),
-                                                  web3.utils.toBN(transaction.token.method.params.fee),
+                                                  web3.utils.toBN(forceBN(transaction.token.method.params.amount)),
+                                                  web3.utils.toBN(forceBN(transaction.token.method.params.fee)),
                                                   web3.utils.toBN(transaction.token.method.params.nonce)).encodeABI(),
         };
     },
@@ -396,8 +422,8 @@ module.exports = function(dependencies) {
             to: transaction.token.contractAddress,
             value: '0x0',
             data: token.methods.burnPreSigned(transaction.token.method.params.signature,
-                                                  web3.utils.toBN(transaction.token.method.params.amount),
-                                                  web3.utils.toBN(transaction.token.method.params.fee),
+                                                  web3.utils.toBN(forceBN(transaction.token.method.params.amount)),
+                                                  web3.utils.toBN(forceBN(transaction.token.method.params.fee)),
                                                   web3.utils.toBN(transaction.token.method.params.nonce)).encodeABI(),
         };
     },
