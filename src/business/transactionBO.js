@@ -266,6 +266,9 @@ module.exports = function(dependencies) {
           })
           .then(resolve)
           .catch(function(e) {
+            console.log(e);
+
+            logger.error('[TransactionBO] An error has ocurred while trying to send the transaction', e);
             if (e.status) {
               reject(e);
             } else {
