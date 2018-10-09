@@ -3,24 +3,24 @@ FROM node:9-alpine
 ARG VERSION=master
 ENV VERSION=${VERSION}
 
-LABEL maintainer="gleisson.assis@gmail.com"
-LABEL source="https://github.com/gleissonassis/bitcoin-cdal.git"
+LABEL maintainer="Gleisson de Assis <gleisson.assis@gmail.com>"
+LABEL source="https://github.com/gleissonassis/eth-cdal"
 LABEL version="${VERSION}"
 
-ADD entrypoint.sh /
+COPY . /app/
 
-COPY LICENSE package.json /app/
-COPY src /app/src
-
-RUN mkdir -p /app/log \
- && echo http://dl-4.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
- && apk add --no-cache mongodb mongodb-tools make gcc g++ git python redis py-pip \
- && pip install supervisor \
- && pip install git+https://github.com/bendikro/supervisord-dependent-startup.git@v1.1.0 \
+RUN apk --no-cache add --virtual native-deps \
+        g++ gcc libgcc libstdc++ linux-headers \
+        autoconf automake make nasm python git \
+ && npm install -g node-gyp \
+ && npm install -g pm2 \
+ && pm2 install pm2-logrotate \
+ && pm2 set pm2-logrotate:retain 10 \
  && cd /app \
  && npm install --production \
- && chmod +x /entrypoint.sh
+ && mkdir -p /app/log \
+ && apk del native-deps
 
-WORKDIR /
+WORKDIR /app
 
-ENTRYPOINT ["/entrypoint.sh"]
+CMD ["pm2-docker", "start", "/app/process.yml"]

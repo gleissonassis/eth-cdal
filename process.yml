@@ -1,0 +1,10 @@
+apps:
+    name: 'cdal-eth'
+    script: '/app/src/server.js'
+    instances: 1
+    exec_mode: 'fork'
+    max_memory_restart: '200M'
+    merge_logs: true
+    error_file: /app/log/errors.log
+    out_file: /app/log/output.log
+    max_restarts: 20

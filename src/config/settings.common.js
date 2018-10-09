@@ -7,7 +7,7 @@ module.exports = {
     servicePort : process.env.PORT || 4000,
     isMongoDebug : true,
     jwt: {
-      secret: 'SECRET_DEV',
+      secret: process.env.SECRET_KEY || 'SECRET_DEV',
       expiresIn: '1h'
     },
 

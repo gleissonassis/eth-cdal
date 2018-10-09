@@ -1,0 +1,60 @@
+version: 2
+jobs:
+  deploy:
+    machine:
+        enabled: true
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Version and tag definition
+          command: |
+            DOCKER_TAG="dev"
+            DOCKER_VERSION="master"
+
+            if [ -n "${CIRCLE_TAG}" ]; then
+              DOCKER_VERSION="${CIRCLE_TAG,,}"
+            elif [ -n "$CIRCLE_BRANCH" ]; then
+              DOCKER_VERSION="${CIRCLE_BRANCH,,}"
+            fi
+
+            if [[ "${DOCKER_VERSION}" == *"-rc"* ]]; then
+               DOCKER_TAG="rc"
+            elif [[ "${DOCKER_VERSION}" != "master" ]]; then
+               DOCKER_TAG="prd"
+            fi
+
+            echo "export DOCKER_TAG=${DOCKER_TAG}" >> ${BASH_ENV}
+            echo "export DOCKER_VERSION=${DOCKER_VERSION}" >> ${BASH_ENV}
+
+            echo "Tag: ${DOCKER_TAG}"
+            echo "Version: ${DOCKER_VERSION}"
+
+      - run:
+          name: Registry login
+          command: |
+            echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin "${DOCKER_REGISTRY}" ;
+
+      - run:
+          name: Build Docker Image
+          command: |
+            make build -e NAMESPACE="${DOCKER_NAMESPACE}" -e TAG="${DOCKER_TAG}" -e VERSION="${DOCKER_VERSION}"
+
+      - run:
+          name: Push Docker Image
+          command: |
+            make push -e NAMESPACE="${DOCKER_NAMESPACE}" -e TAG="${DOCKER_TAG}"
+
+workflows:
+  version: 2
+  publish:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: master
+            tags:
+              only: /^v.*/
