@@ -166,6 +166,7 @@ module.exports = function(dependencies) {
           })
           .then(resolve)
           .catch(function(r) {
+            console.log(r);
             logger.error('[BOSWorker] An error has occurred whiling synchronizing to daemon', JSON.stringify(r));
             //even if a error has occurred the process must continue
             resolve(true);

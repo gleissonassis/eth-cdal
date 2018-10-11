@@ -65,6 +65,7 @@ module.exports = function(dependencies) {
           })
           .then(resolve)
           .catch(function(r){
+            console.log(r);
             logger.error('[AAPMSWorker] An error has occurred while maintaining the pool');
             reject(r);
           });

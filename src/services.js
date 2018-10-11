@@ -5,5 +5,5 @@ var WorkerFactory       = require('./workers/workerFactory');
 bfsWorker.run();*/
 
 
-var worker = WorkerFactory.getWorker('bfs');
+var worker = WorkerFactory.getWorker('bos');
 worker.run();

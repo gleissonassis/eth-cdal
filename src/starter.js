@@ -2,6 +2,7 @@ var settings            = require('./config/settings');
 var WorkerFactory       = require('./workers/workerFactory');
 var BOFactory           = require('./business/boFactory');
 var logger              = require('./config/logger');
+var settings            = require('./config/settings');
 
 module.exports = function() {
   return {
@@ -20,9 +21,12 @@ module.exports = function() {
             aapmsWorker.run();
             tnsWorker.run();
             bosWorker.run();
-            bfsWorker.run();
-            tbfsWorker.run();
-            efsWorker.run();
+
+            if (!settings.daemonSettings.disableForwarderServices) {
+              bfsWorker.run();
+              tbfsWorker.run();
+              efsWorker.run();
+            }
           })
           .then(resolve)
           .catch(reject);

@@ -11,7 +11,8 @@
     "GANACHE": "NOTIFICATION_API_ADDRESS=http://localhost:3004/v1/wallets/${symbol}/notifications DB_NAME=eth-cdal-ganache DAEMON_MAIN_ADDRESS=0x6025961e3F43AeB967f28A0aD88E46860b85def4 DAEMON_MAIN_ADDRESS=0x6025961e3F43AeB967f28A0aD88E46860b85def4 DAEMON_BASE_URL=http://localhost:7545 node src/server.js",
     "GANACHE-SERVICES": "DB_NAME=eth-cdal-ganache DAEMON_MAIN_ADDRESS=0x6025961e3F43AeB967f28A0aD88E46860b85def4 DAEMON_BASE_URL=http://localhost:7545 node src/services.js",
     "ROPSTEN": "DB_NAME=eth-cdal-ropsten DAEMON_MAIN_ADDRESS=0x85264427771cd0a57a8EEbae9Ae1Dc39F7eEBEc0 DAEMON_BASE_URL=https://ropsten.infura.io node src/server.js",
-    "MORDEN": "DB_NAME=etc-cdal-morden DAEMON_MAIN_ADDRESS=0xc24d34c9941d562d442bab0a3422b57fb420e4dc DAEMON_BASE_URL=http://35.237.10.166:8545 node src/server.js",
+    "MORDEN": "MIN_ADDRESS_POOL_SIZE=0 DAEMON_DISABLE_FORWARDER_SERVICES=true  NOTIFICATION_API_ADDRESS=http://www.mocky.io/v2/5b8ade0d2c00001a1028101e DB_NAME=etc-cdal-morden DAEMON_MAIN_ADDRESS=0xc24d34c9941d562d442bab0a3422b57fb420e4dc DAEMON_BASE_URL=https://web3.gastracker.io/morden node src/server.js",
+    "MORDEN-SERVICES": "DAEMON_DISABLE_FORWARDER_SERVICES=true NOTIFICATION_API_ADDRESS=http://www.mocky.io/v2/5b8ade0d2c00001a1028101e DB_NAME=etc-cdal-morden DAEMON_MAIN_ADDRESS=0xc24d34c9941d562d442bab0a3422b57fb420e4dc NOTIFICATION_API_ADDRESS=http://www.mocky.io/v2/5b8ade0d2c00001a1028101e DAEMON_BASE_URL=https://web3.gastracker.io/morden node src/services.js",
     "PARITY": "DB_NAME=etc-cdal-parity DAEMON_MAIN_ADDRESS=0xc24d34c9941d562d442bab0a3422b57fb420e4dc DAEMON_BASE_URL=https://etc-parity.0xinfra.com node src/server.js",
     "test": "NODE_ENV=test istanbul cover --reporter=html ./node_modules/mocha/bin/_mocha -- -R spec --recursive"
   },

@@ -7,7 +7,7 @@ module.exports = {
     servicePort : process.env.PORT || 4000,
     isMongoDebug : true,
     jwt: {
-      secret: 'SECRET_DEV',
+      secret: process.env.SECRET_KEY || 'SECRET_DEV',
       expiresIn: '1h'
     },
 
@@ -31,6 +31,7 @@ module.exports = {
       baseUrl: process.env.DAEMON_BASE_URL || 'http://localhost:8545',
       defaultSymbol: process.env.DAEMON_DEFAULT_SYMBPL || 'ETH',
       mainAddress: process.env.DAEMON_MAIN_ADDRESS || '0x6025961e3F43AeB967f28A0aD88E46860b85def4',
-      erc20TransferGasLimit: process.env.DAEMON_ER20_TRANSFER_GAST_LIMIT || 57381
+      erc20TransferGasLimit: process.env.DAEMON_ER20_TRANSFER_GAST_LIMIT || 57381,
+      disableForwardToMainAddress: process.env.DISABLE_FORWARD_TO_MAIN_ADDRESS === 'true'
     }
   };

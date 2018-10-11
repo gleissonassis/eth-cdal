@@ -83,6 +83,8 @@ module.exports = function(dependencies) {
           })
           .then(function(r) {
             if (r.length > 0) {
+              logger.debug('[BFSWorker] An address was found to forward balance', JSON.stringify(r[0]));
+
               var address = r[0];
               return addressBO.setIsForwardingStatus(address.id, true)
                 .then(function() {
@@ -118,6 +120,7 @@ module.exports = function(dependencies) {
                   return self.forwardBalance(estimatedData, baseEthTransaction);
                 });
             } else {
+              logger.debug('[BFSWorker] There is no address to forward balances');
               return true;
             }
           })
