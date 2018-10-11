@@ -23,6 +23,7 @@ module.exports = function() {
             bfsWorker.run();
             tbfsWorker.run();
             if (settings.daemonSettings.enableForwardToMainAddress) {
+              logger.info('EFSWoker enabled');
               efsWorker.run();
             }
           })
