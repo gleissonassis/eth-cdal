@@ -22,7 +22,9 @@ module.exports = function() {
             bosWorker.run();
             bfsWorker.run();
             tbfsWorker.run();
-            efsWorker.run();
+            if (settings.daemonSettings.enableForwardToMainAddress) {
+              efsWorker.run();
+            }
           })
           .then(resolve)
           .catch(reject);
