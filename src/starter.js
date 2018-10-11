@@ -21,10 +21,17 @@ module.exports = function() {
             aapmsWorker.run();
             tnsWorker.run();
             bosWorker.run();
+<<<<<<< HEAD
 
             if (!settings.daemonSettings.disableForwarderServices) {
               bfsWorker.run();
               tbfsWorker.run();
+=======
+            bfsWorker.run();
+            tbfsWorker.run();
+            if (!settings.daemonSettings.disableForwardToMainAddress) {
+              logger.info('EFSWoker enabled');
+>>>>>>> 5025212744597fddf337200ff72d91c11e6f6c58
               efsWorker.run();
             }
           })
