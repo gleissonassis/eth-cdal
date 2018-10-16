@@ -4,9 +4,9 @@ var BOFactory           = require('./business/boFactory');
 var logger              = require('./config/logger');
 var settings            = require('./config/settings');
 
-module.exports = function(disableForwarderServices) {
+module.exports = function() {
   return {
-    runWorkers: function() {
+    runWorkers: function(disableForwarderServices) {
       return new Promise(function(resolve, reject) {
         var chain = Promise.resolve();
         var bosWorker = WorkerFactory.getWorker('bos');
@@ -52,11 +52,11 @@ module.exports = function(disableForwarderServices) {
       return Promise.all(p);
     },
 
-    configureApplication: function() {
+    configureApplication: function(disableForwarderServices) {
       var self = this;
       this.configureDefaultSettings()
         .then(function() {
-          return self.runWorkers();
+          return self.runWorkers(disableForwarderServices);
         })
         .catch(function() {
           logger.error('There was an error configuring the application');
