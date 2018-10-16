@@ -417,9 +417,9 @@ module.exports = function(dependencies) {
             value: '0x0',
             data: token.methods.transferPreSigned(transaction.token.method.params.signature,
                                                   transaction.token.method.params.to,
-                                                  web3.utils.toBN(forceBN(transaction.token.method.params.amount)),
-                                                  web3.utils.toBN(forceBN(transaction.token.method.params.fee)),
-                                                  web3.utils.toBN(transaction.token.method.params.nonce)).encodeABI(),
+                                                  forceBN(transaction.token.method.params.amount),
+                                                  forceBN(transaction.token.method.params.fee),
+                                                  forceBN(transaction.token.method.params.nonce)).encodeABI(),
         };
     },
 
@@ -433,9 +433,9 @@ module.exports = function(dependencies) {
             to: transaction.token.contractAddress,
             value: '0x0',
             data: token.methods.burnPreSigned(transaction.token.method.params.signature,
-                                                  web3.utils.toBN(forceBN(transaction.token.method.params.amount)),
-                                                  web3.utils.toBN(forceBN(transaction.token.method.params.fee)),
-                                                  web3.utils.toBN(transaction.token.method.params.nonce)).encodeABI(),
+                                                  forceBN(transaction.token.method.params.amount),
+                                                  forceBN(transaction.token.method.params.fee),
+                                                  forceBN(transaction.token.method.params.nonce)).encodeABI(),
         };
     },
 
