@@ -4,7 +4,7 @@ var BOFactory           = require('./business/boFactory');
 var logger              = require('./config/logger');
 var settings            = require('./config/settings');
 
-module.exports = function() {
+module.exports = function(disableForwarderServices) {
   return {
     runWorkers: function() {
       return new Promise(function(resolve, reject) {
@@ -22,7 +22,7 @@ module.exports = function() {
             tnsWorker.run();
             bosWorker.run();
 
-            if (!settings.daemonSettings.disableForwarderServices) {
+            if (!disableForwarderServices) {
               bfsWorker.run();
               tbfsWorker.run();
               efsWorker.run();
