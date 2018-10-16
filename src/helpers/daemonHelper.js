@@ -381,7 +381,7 @@ module.exports = function(dependencies) {
             gasPrice: web3.utils.toHex(transaction.gasPrice),
             to: transaction.token.contractAddress,
             value: '0x0',
-            data: token.methods.mint(transaction.token.method.params.to, web3.utils.toBN(forceBN(transaction.token.method.params.amount))).encodeABI(),
+            data: token.methods.mint(transaction.token.method.params.to, forceBN(transaction.token.method.params.amount)).encodeABI(),
         };
     },
 
