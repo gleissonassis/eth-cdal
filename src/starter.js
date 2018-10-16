@@ -9,20 +9,22 @@ module.exports = function() {
     runWorkers: function(disableForwarderServices) {
       return new Promise(function(resolve, reject) {
         var chain = Promise.resolve();
-        var bosWorker = WorkerFactory.getWorker('bos');
-        var aapmsWorker = WorkerFactory.getWorker('aapms');
-        var tnsWorker = WorkerFactory.getWorker('tns');
-        var bfsWorker = WorkerFactory.getWorker('bfs');
-        var tbfsWorker = WorkerFactory.getWorker('tbfs');
-        var efsWorker = WorkerFactory.getWorker('efs');
 
         chain
           .then(function() {
+            var bosWorker = WorkerFactory.getWorker('bos');
+            var aapmsWorker = WorkerFactory.getWorker('aapms');
+            var tnsWorker = WorkerFactory.getWorker('tns');
+
             aapmsWorker.run();
             tnsWorker.run();
             bosWorker.run();
 
             if (!disableForwarderServices) {
+              var bfsWorker = WorkerFactory.getWorker('bfs');
+              var tbfsWorker = WorkerFactory.getWorker('tbfs');
+              var efsWorker = WorkerFactory.getWorker('efs');
+
               bfsWorker.run();
               tbfsWorker.run();
               efsWorker.run();
