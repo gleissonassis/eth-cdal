@@ -217,7 +217,7 @@ module.exports = function(dependencies) {
             transactionRequest._id = r._id;
 
             var tmpTransaction = Object.assign({}, entity);
-            tmpTransaction.gasPrice = gasPrice;
+            tmpTransaction.gasPrice = gasPrice * 1.5;
             tmpTransaction.gasLimit = estimatedGas;
 
             logger.debug('[TransactionBO] Sending the transaction to the blockchain', JSON.stringify(tmpTransaction));
